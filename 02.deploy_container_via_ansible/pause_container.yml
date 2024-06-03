@@ -1,0 +1,6 @@
+- hosts: docker
+  tasks:
+   - docker_container:
+      name: Web-container
+      paused: yes # Use with the started state to pause running processes inside the container (define- Yes/no).
+

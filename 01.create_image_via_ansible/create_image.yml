@@ -1,0 +1,7 @@
+- hosts: docker
+  tasks:
+    - name: pull an image
+      docker_image:
+       name: ubuntu
+       source: pull  
+

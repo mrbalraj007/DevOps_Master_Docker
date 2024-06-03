@@ -1,0 +1,10 @@
+- hosts: docker
+  tasks:
+    - name: add tag latest to image
+      docker_image:
+       name: ubuntu
+       repository: ubuntu_1:latest # # As 'latest' usually already is present, we need to enable overwriting of existing tags:
+       force_tag: true
+       source: local
+       
+

@@ -1,0 +1,8 @@
+- hosts: docker
+  tasks:
+   - docker_container:
+      name: Web-container
+      image: ubuntu:14.04
+      command: sleep infinity
+      ports:
+       - "80:80"

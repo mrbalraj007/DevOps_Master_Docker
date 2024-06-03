@@ -1,0 +1,8 @@
+- hosts: docker
+  tasks:
+    - name: remove image
+      docker_image:
+       name: ubuntu
+       state: absent
+       tag: latest 
+

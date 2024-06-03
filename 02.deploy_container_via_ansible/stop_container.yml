@@ -1,0 +1,5 @@
+- hosts: docker
+  tasks:
+   - docker_container:
+      name: Web-container
+      state: stopped
