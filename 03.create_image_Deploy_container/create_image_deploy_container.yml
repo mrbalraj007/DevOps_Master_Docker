@@ -1,0 +1,47 @@
+---
+- name: Docker Image and Container Management
+  hosts: docker
+  become: yes
+  tasks:
+    - name: Ensure Docker is installed
+      ansible.builtin.package:
+        name: docker-ce
+        state: present
+
+    - name: Start Docker service
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create directory for Dockerfile
+      ansible.builtin.file:
+        path: /home/dc-ops/DevOps_Master_Docker/03.create_image_Deploy_container
+        state: directory
+        mode: '0755'
+
+    - name: Create Dockerfile
+      ansible.builtin.copy:
+        dest: /home/dc-ops/DevOps_Master_Docker/03.create_image_Deploy_container/Dockerfile
+        content: |
+          FROM ubuntu:20.04
+          RUN apt-get update && apt-get install -y nginx
+          CMD ["nginx", "-g", "daemon off;"]
+
+    - name: Build Docker image
+      community.docker.docker_image:
+        build:
+          path: /home/dc-ops/DevOps_Master_Docker/03.create_image_Deploy_container/
+        name: my_nginx_image
+        source: build
+        tag: latest
+
+    - name: Run Docker container
+      community.docker.docker_container:
+        name: my_nginx_container
+        image: my_nginx_image:latest
+        state: started
+        ports:
+          - "80:80"
+
+
