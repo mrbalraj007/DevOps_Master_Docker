@@ -1,0 +1,2 @@
+[app_servers]
+docker ansible_host=docker 

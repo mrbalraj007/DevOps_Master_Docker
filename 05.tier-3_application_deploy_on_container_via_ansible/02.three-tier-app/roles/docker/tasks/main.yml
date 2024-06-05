@@ -1,0 +1,40 @@
+- name: Pull Ubuntu image
+  docker_image:
+    name: ubuntu
+    source: pull
+
+- name: Create network
+  docker_network:
+    name: app_network
+    state: present
+
+- name: Create database container
+  docker_container:
+    name: db
+    image: ubuntu
+    command: /bin/bash -c "while true; do sleep 3600; done"
+    detach: yes
+    networks:
+      - name: app_network
+    state: started
+
+- name: Create backend container
+  docker_container:
+    name: backend
+    image: ubuntu
+    command: /bin/bash -c "while true; do sleep 3600; done"
+    detach: yes
+    networks:
+      - name: app_network
+    state: started
+
+- name: Create frontend container
+  docker_container:
+    name: frontend
+    image: ubuntu
+    command: /bin/bash -c "while true; do sleep 3600; done"
+    detach: yes
+    networks:
+      - name: app_network
+    state: started
+

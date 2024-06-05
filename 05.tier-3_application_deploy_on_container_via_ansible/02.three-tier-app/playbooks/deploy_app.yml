@@ -1,0 +1,6 @@
+- name: Deploy Three-Tier Application
+  hosts: app_servers
+  become: yes
+  roles:
+    - docker
+
