@@ -41,8 +41,20 @@ touch three-tier-app/{ansible.cfg,inventory,playbook.yml,group_vars/all.yml}
 ```
 
 #### Step 2: Ansible Configuration File (ansible.cfg)
+```css
+[defaults]
+inventory = inventory
+remote_user = dc-ops
+host_key_checking = False
+```
+
 #### Step 3: Inventory File (inventory)
-#### Step 4: Inventory File (inventory)
+Define the inventory file to specify the hosts:
+```css
+[docker]
+docker ansible_host=192.168.1.221 ansible_user=dc-ops
+```
+
 
 ##### Explanation of Steps
 
