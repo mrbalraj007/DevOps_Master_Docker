@@ -1,0 +1,15 @@
+---
+- name: Pull Ubuntu Image
+  docker_image:
+    name: ubuntu
+    source: pull
+  tags: db
+
+- name: Run DB Container
+  docker_container:
+    name: db_server
+    image: ubuntu
+    command: "/bin/bash -c 'while true; do echo database server; sleep 10; done'"
+    detach: yes
+  tags: db
+

@@ -1,0 +1,13 @@
+---
+- name: Deploy Two-tier Application
+  hosts: all
+  become: true
+  tasks:
+    - include_role:
+        name: web
+      tags: web
+
+    - include_role:
+        name: db
+      tags: db
+

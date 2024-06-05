@@ -1,0 +1,17 @@
+---
+- name: Pull Ubuntu Image
+  docker_image:
+    name: ubuntu
+    source: pull
+  tags: web
+
+- name: Run Web Container
+  docker_container:
+    name: web_app
+    image: ubuntu
+    command: "/bin/bash -c 'while true; do echo hello world; sleep 10; done'"
+    detach: yes
+    ports:
+      - "80:80"
+  tags: web
+
