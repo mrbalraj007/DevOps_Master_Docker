@@ -1,0 +1,9 @@
+- name: Setup two-tier application
+  hosts: app
+  gather_facts: yes
+  roles:
+    - frontend
+    - backend
+    - website
+
+

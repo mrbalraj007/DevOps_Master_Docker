@@ -1,3 +1,0 @@
-[docker]
-docker ansible_host=192.168.1.221 ansible_user=dc-ops
-

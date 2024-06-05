@@ -1,0 +1,13 @@
+- name: Pull Ubuntu image
+  docker_image:
+    name: ubuntu
+    source: pull
+
+- name: Run frontend container
+  docker_container:
+    name: frontend
+    image: ubuntu
+    state: started
+    detach: yes
+    command: "echo 'Frontend container running'"
+

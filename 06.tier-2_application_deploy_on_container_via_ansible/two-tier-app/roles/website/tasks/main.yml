@@ -1,0 +1,21 @@
+- name: Pull Nginx image
+  docker_image:
+    name: nginx
+    source: pull
+
+- name: Copy website files to host
+  ansible.builtin.template:
+    src: index.html.j2
+    dest: /tmp/index.html
+
+- name: Run website container
+  docker_container:
+    name: website
+    image: nginx
+    state: started
+    detach: yes
+    ports:
+      - "80:80"
+    volumes:
+      - /tmp/index.html:/usr/share/nginx/html/index.html:ro
+

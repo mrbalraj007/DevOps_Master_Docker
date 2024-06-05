@@ -1,6 +1,0 @@
----
-docker_image: "ubuntu:latest"
-frontend_port: 80
-backend_port: 5000
-database_port: 3306
-
