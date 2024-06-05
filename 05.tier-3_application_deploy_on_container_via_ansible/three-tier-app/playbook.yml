@@ -1,0 +1,9 @@
+---
+- name: Deploy three-tier application
+  hosts: docker
+  become: yes
+  roles:
+    - frontend
+    - backend
+    - database
+
