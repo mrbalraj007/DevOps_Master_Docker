@@ -4,19 +4,10 @@
     name: python
     source: pull
 
-- name: Run apt-get update
+- name: Stop and remove existing backend container
   docker_container:
     name: backend
-    image: python
-    state: started
-    command: apt-get update
-
-- name: Install Python and pip
-  docker_container:
-    name: backend
-    image: python
-    state: started
-    command: apt-get install -y python3 python3-pip
+    state: absent
 
 - name: Create application directory
   file:
@@ -28,10 +19,22 @@
     src: files/
     dest: /opt/backend/
 
+- name: Copy requirements file
+  copy:
+    src: files/requirements.txt
+    dest: /opt/backend/
+
+- name: Install Python and pip
+  docker_container:
+    name: backend
+    image: python
+    state: started
+    command: /bin/bash -c "apt-get update && apt-get install -y python3 python3-pip && pip3 install --upgrade pip"
+
 - name: Install dependencies
   docker_container:
     name: backend
     image: python
     state: started
-    command: pip install -r /opt/backend/requirements.txt
+    command: /bin/bash -c "pip3 install -r /opt/backend/requirements.txt"
 
