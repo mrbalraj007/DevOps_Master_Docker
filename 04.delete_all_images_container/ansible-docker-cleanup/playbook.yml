@@ -1,0 +1,6 @@
+- name: Clean up Docker containers and images
+  hosts: docker_hosts
+  become: yes
+  roles:
+    - docker_cleanup
+

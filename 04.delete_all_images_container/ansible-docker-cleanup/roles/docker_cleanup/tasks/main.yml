@@ -1,0 +1,31 @@
+---
+- name: Check the number of running containers
+  shell: docker ps -q
+  register: docker_containers_count
+  changed_when: false
+
+- name: Check the number of all containers
+  shell: docker ps -a -q
+  register: docker_all_containers_count
+  changed_when: false
+
+- name: Check the number of images
+  shell: docker images -q
+  register: docker_images_count
+  changed_when: false
+
+- name: Stop all running containers
+  shell: docker stop $(docker ps -q)
+  ignore_errors: yes
+  when: docker_containers_count.stdout != ""
+
+- name: Remove all containers
+  shell: docker rm -f $(docker ps -a -q)
+  ignore_errors: yes
+  when: docker_all_containers_count.stdout != ""
+
+- name: Remove all images
+  shell: docker rmi -f $(docker images -q)
+  ignore_errors: yes
+  when: docker_images_count.stdout != ""
+
