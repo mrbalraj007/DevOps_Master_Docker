@@ -1,0 +1,17 @@
+---
+- name: Pull MySQL image
+  docker_image:
+    name: mysql
+    source: pull
+
+- name: Run MySQL container
+  docker_container:
+    name: database
+    image: mysql
+    state: started
+    env:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: mydb
+    ports:
+      - "3306:{{ database_port }}"
+
