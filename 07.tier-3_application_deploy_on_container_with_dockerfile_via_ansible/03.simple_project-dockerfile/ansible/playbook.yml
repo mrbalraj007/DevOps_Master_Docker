@@ -1,0 +1,25 @@
+---
+- name: Deploy Three-Tier Application
+  hosts: docker
+  become: yes
+  tasks:
+    - name: Copy Dockerfile to the server
+      copy:
+        src: files/Dockerfile
+        dest: /tmp/Dockerfile
+
+    - name: Build Docker image
+      docker_image:
+        build:
+          path: /tmp
+          pull: yes
+        name: three-tier-app
+        tag: latest
+
+    - name: Run Docker container
+      docker_container:
+        name: three-tier-app
+        image: three-tier-app
+        ports:
+          - "80:80"
+
