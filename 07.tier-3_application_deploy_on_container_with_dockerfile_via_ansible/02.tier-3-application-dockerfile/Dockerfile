@@ -1,22 +1,18 @@
-# Use Ubuntu 20.04 base image
+# Use the official Ubuntu image as a base
 FROM ubuntu:20.04
 
-# Set environment variable to accept prompts
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Disable checking for valid timestamps in apt
-RUN echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99checkvalid
-
-# Update and install necessary packages
+# Update the package list and install necessary packages
 RUN apt-get update && apt-get install -y \
-    apache2 \
-    mysql-server \
-    php \
-    && rm -rf /var/lib/apt/lists/*
+    nginx \
+    php-fpm \
+    php-mysql \
+    mysql-server
 
-# Expose ports
-EXPOSE 80 443
+# Copy the application code
+COPY app /var/www/html/
 
-# Start services
-CMD service apache2 start && service mysql start && tail -f /dev/null
+# Expose port 80
+EXPOSE 80
 
+# Start the services
+CMD service mysql start && service php7.4-fpm start && nginx -g 'daemon off;'

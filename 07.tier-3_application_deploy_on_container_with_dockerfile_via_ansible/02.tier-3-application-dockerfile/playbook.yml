@@ -1,0 +1,29 @@
+- name: Deploy three-tier application
+  hosts: docker
+  tasks:
+    - name: Ensure Docker is running
+      systemd:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Copy Dockerfile to remote server
+      copy:
+        src: ./Dockerfile
+        dest: /tmp/Dockerfile
+
+    - name: Build Docker image
+      community.docker.docker_image:
+        name: three_tier_app
+        source: build
+        build:
+         path: /tmp
+        state: present
+
+    - name: Run the Docker container
+      community.docker.docker_container:
+        name: three_tier_app_container
+        image: three_tier_app
+        state: started
+        ports:
+          - "80:80"
