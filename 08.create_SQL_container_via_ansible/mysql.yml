@@ -1,0 +1,26 @@
+- hosts: docker
+  tasks:	   
+    -  name: Pull MySQL Docker image
+       docker_image:
+        name: mysql
+        tag: latest
+        source: pull
+
+    - name: Run MySQL container
+      docker_container:
+        name: mysql_container
+        image: mysql:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "3306:3306"
+        env:
+          MYSQL_ROOT_PASSWORD: my-secret-pw
+          MYSQL_DATABASE: mydb
+          MYSQL_USER: myuser
+          MYSQL_PASSWORD: mypassword
+
+    - name: Ensure MySQL container is running
+      docker_container:
+        name: mysql_container
+        state: started
