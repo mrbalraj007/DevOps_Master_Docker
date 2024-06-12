@@ -42,7 +42,6 @@ Specifies the docker host where the containers will be deployed.
 
 #### 04. Playbook:
 
-- Installs Docker SDK for Python on the docker host.
 - Ensures that the Docker network and volume exist.
 - Builds a Docker image from the Dockerfile.
 - Creates three SQL containers using the built Docker image, attaching them to the  created network and volume.
