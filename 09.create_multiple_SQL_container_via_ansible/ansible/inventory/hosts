@@ -1,4 +1,0 @@
-# sql-container-project/ansible/inventory
-
-[docker]
-docker ansible_host=docker ansible_user=dc-ops
