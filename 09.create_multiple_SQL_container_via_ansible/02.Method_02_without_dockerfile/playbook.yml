@@ -1,0 +1,31 @@
+---
+- name: Deploy multiple MySQL containers
+  hosts: docker
+  become: true
+  tasks:
+    - name: Create MySQL containers
+      docker_container:
+        name: "{{ item.name }}"
+        image: mysql:latest
+        state: started
+        restart_policy: always
+        ports:
+          - "{{ item.host_port }}:3306"
+        env:
+          MYSQL_ROOT_PASSWORD: "{{ item.root_password }}"
+          MYSQL_DATABASE: "{{ item.database }}"
+          MYSQL_USER: "{{ item.user }}"
+          MYSQL_PASSWORD: "{{ item.password }}"
+        volumes:
+          - "{{ item.volume }}:/var/lib/mysql"
+      with_items:
+        - { name: "mysql1", host_port: "3306", root_password: "rootpassword1", database: "database1", user: "user1", password: "password1", volume: "mysql1-data" }
+        - { name: "mysql2", host_port: "3307", root_password: "rootpassword2", database: "database2", user: "user2", password: "password2", volume: "mysql2-data" }
+ 
+    - name: Ensure Docker volumes exist
+      docker_volume:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - mysql1-data
+        - mysql2-data
