@@ -1,4 +1,26 @@
 # To create three SQL containers along with a new volume and a new network.
+### Environment Setup
+- I am using two servers where I have configured Ansible and Docker, and below are the details.
+
+> Ansible Server :
+
+```ini
+[dc-ops@controller ~]$ hostname
+controller
+[dc-ops@controller ~]$ cat /etc/os-release
+NAME="Red Hat Enterprise Linux"
+VERSION="9.2 (Plow)"
+```
+
+> Docker Server:
+
+```ini
+dc-ops@docker:~$ hostname
+docker
+dc-ops@docker:~$ cat /etc/os-release
+PRETTY_NAME="Ubuntu 24.04 LTS"
+NAME="Ubuntu"
+```
 
  ### Following is the project folder directory
  ![alt text](image.png)
