@@ -1,0 +1,49 @@
+# sql-container-project/ansible/playbook.yml
+
+- name: Deploy SQL Containers
+  hosts: docker
+  become: true
+  tasks:
+
+    - name: Create /tmp/sql-container-project/docker directory if it does not exist
+      file:
+        path: /tmp/sql-container-project/docker
+        state: directory
+        mode: '0755'
+
+    - name: Create Docker network if not exists
+      docker_network:
+        name: sql_network
+        state: present
+
+    - name: Create Docker volume if not exists
+      docker_volume:
+        name: sql_volume
+        state: present
+
+    - name: Copy Dockerfile to remote host
+      copy:
+        src: ../docker/Dockerfile
+        dest: /tmp/sql-container-project/docker/Dockerfile
+
+    - name: Build Docker image
+      docker_image:
+        name: custom_sql_image
+        source: build
+        build:
+          path: /tmp/sql-container-project/docker
+
+    - name: Create SQL containers
+      docker_container:
+        name: "sql_container{{ item }}"
+        image: custom_sql_image
+        state: started
+        restart_policy: always
+        volumes:
+          - sql_volume:/var/lib/mysql
+        networks:
+          - name: sql_network
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+      with_sequence: start=1 end=3
+
