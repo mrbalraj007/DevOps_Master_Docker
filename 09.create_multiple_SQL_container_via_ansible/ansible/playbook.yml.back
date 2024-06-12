@@ -5,19 +5,13 @@
   become: true
   tasks:
 
-    - name: Create /tmp/sql-container-project/docker directory if it does not exist
-      file:
-        path: /tmp/sql-container-project/docker
-        state: directory
-        mode: '0755'
-
     - name: Create Docker network if not exists
-      docker_network:
+      community.docker.docker_network:
         name: sql_network
         state: present
 
     - name: Create Docker volume if not exists
-      docker_volume:
+      community.docker.docker_volume:
         name: sql_volume
         state: present
 
@@ -27,14 +21,14 @@
         dest: /tmp/sql-container-project/docker/Dockerfile
 
     - name: Build Docker image
-      docker_image:
+      community.docker.docker_image:
         name: custom_sql_image
         source: build
         build:
           path: /tmp/sql-container-project/docker
 
     - name: Create SQL containers
-      docker_container:
+      community.docker.docker_container:
         name: "sql_container{{ item }}"
         image: custom_sql_image
         state: started
