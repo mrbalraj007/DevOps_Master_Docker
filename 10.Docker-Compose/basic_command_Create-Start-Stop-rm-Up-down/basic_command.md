@@ -12,6 +12,11 @@ __Docker-compose create__ : This command is used to create a container, and it w
 *Difference between __Create__ and __up --no-start__*
 - Create command won't create __network__ while creating a container while up will do.
 
+docker-compose logs -f
+Exec: will login into the container
+Run: will create a new container and exist
+Restart:
+Pull:
 
 Help command: 
 docker-compose --help
