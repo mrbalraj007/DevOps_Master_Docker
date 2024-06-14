@@ -1,0 +1,17 @@
+{
+    "version": "3.7",
+    "services": {
+        "web-app": {
+            "image": "nginx",
+            "ports": [
+                "8000:80"
+            ]
+        },
+        "web-app1": {
+            "image": "nginx",
+            "ports": [
+                "8001:80"
+            ]
+        }
+    }
+}
