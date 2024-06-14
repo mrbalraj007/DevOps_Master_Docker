@@ -72,3 +72,8 @@ OK
 ```bash
 $ docker compose down
 ```
+
+```For a complete cleanup```, including volumes and networks, you can use:
+```bash
+docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker rmi $(docker images -q) && docker volume prune -f && docker network prune -f
+```
