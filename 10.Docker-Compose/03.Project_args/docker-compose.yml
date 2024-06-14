@@ -1,0 +1,13 @@
+version: "3.7"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VERSION=3.4
+    image: python-redis-2
+    ports:
+      - "5000:5000"
+  redis:
+    image: "redis:alpine"
