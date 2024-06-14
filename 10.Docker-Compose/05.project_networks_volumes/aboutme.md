@@ -1,5 +1,4 @@
-# Project: Sample Application via Compose
-## Running Python/Flask application using a Redis database via ARG parameter.
+# Project: Sample Application with Volume and Nework via Compose
 *Folder structure:*
 ```css
 .
@@ -11,27 +10,48 @@
 
 1 directory, 5 files
 ```
-### Understand how ARG and FROM interact : [_Ref link_](https://docs.docker.com/reference/dockerfile/?highlight=args)
-```FROM``` instructions support variables that are declared by any ```ARG```instructions that occur before the first ```FROM```.
+#### Status before execute the build:
+![alt text](image.png)
 
-```bash
-ARG  CODE_VERSION=latest
-FROM base:${CODE_VERSION}
-CMD  /code/run-app
-FROM extras:${CODE_VERSION}
-CMD  /code/run-extras
+__Compose file__ 
+
+```yml
+version: "3.7"
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PYTHON_VERSION=3.4-alpine
+    image: balrajsi/python-redis
+    ports:
+      - "5000:5000"
+    networks:
+      - appnetwork
+  redis:
+    image: "redis:alpine"
+    volumes:
+      - myredisdata:/data
+    networks:
+      - appnetwork
+
+  redis2:
+    image: "redis:alpine"
+    volumes:
+      - myredisdata2:/data
+    networks:
+      - appnetwork2
+networks:
+  appnetwork:
+  appnetwork2:
+
+volumes:
+  myredisdata:
+  myredisdata2:
 ```
-An ```ARG``` declared before a ```FROM``` is outside of a build stage, so it can't be used in any instruction after a ```FROM```. To use the default value of an ```ARG``` declared before the first ```FROM``` use an ARG instruction without a value inside of a build stage:
-
-```bash
-ARG VERSION=latest
-FROM busybox:$VERSION
-ARG VERSION
-RUN echo $VERSION > image_version
-```
- 
- 
-
+### ```Explaination```: 
+*We have defined three containers within the services section, each using a network and a volume. The network property will create two networks: appnetwork and appnetwork2. Similarly, the volumes property will create volumes inside the containers. Users can attach a network to any container, provided it is defined in the YAML file.*
 
 ## Now, we will try to deploy it with docker compose
 
@@ -39,8 +59,7 @@ RUN echo $VERSION > image_version
 docker compose up -d
 ```                                                                                
 ### outcomes:
-![alt text](image.png)
-
+![alt text](image-1.png)
 
 ### Delete the project
 ```bash
