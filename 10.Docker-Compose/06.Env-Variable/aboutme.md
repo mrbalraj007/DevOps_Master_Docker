@@ -1,65 +1,60 @@
-# Project: Sample Application with Volume and Nework via Compose
+# How to use env variable via Compose
+
 *Folder structure:*
 ```css
-.
-├── aboutme.md
-├── app.py
-├── docker-compose.yml
-├── Dockerfile
-└── requirements.txt
-
-1 directory, 5 files
+total 32
+drwxrwxr-x 2 dc-ops dc-ops 4096 Jun 16 16:28 .
+drwxrwxr-x 9 dc-ops dc-ops 4096 Jun 16 16:14 ..
+-rw-rw-r-- 1 dc-ops dc-ops 1760 Jun 16 16:14 aboutme.md
+-rw-rw-r-- 1 dc-ops dc-ops  349 Jun 16 16:14 app.py
+-rw-rw-r-- 1 dc-ops dc-ops  239 Jun 16 16:28 docker-compose.yml
+-rw-rw-r-- 1 dc-ops dc-ops  134 Jun 16 16:26 Dockerfile
+-rw-rw-r-- 1 dc-ops dc-ops   44 Jun 16 16:22 .env
+-rw-rw-r-- 1 dc-ops dc-ops   12 Jun 16 16:14 requirements.txt
 ```
-#### Status before execute the build:
-![alt text](image.png)
-
 __Compose file__ 
-
 ```yml
 version: "3.7"
 services:
   web:
     build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        - PYTHON_VERSION=3.4-alpine
-    image: balrajsi/python-redis
+     context: .
+     dockerfile: Dockerfile
+     args:
+       - PYTHON_VERSION=${PYTHON_VERSION}
+    image: python-redis-1
     ports:
       - "5000:5000"
-    networks:
-      - appnetwork
   redis:
-    image: "redis:alpine"
-    volumes:
-      - myredisdata:/data
-    networks:
-      - appnetwork
-
-  redis2:
-    image: "redis:alpine"
-    volumes:
-      - myredisdata2:/data
-    networks:
-      - appnetwork2
-networks:
-  appnetwork:
-  appnetwork2:
-
-volumes:
-  myredisdata:
-  myredisdata2:
+    image: ${REDIS_IMAGE}
 ```
+
 ### ```Explaination```: 
-*We have defined three containers within the services section, each using a network and a volume. The network property will create two networks: appnetwork and appnetwork2. Similarly, the volumes property will create volumes inside the containers. Users can attach a network to any container, provided it is defined in the YAML file.*
+
+```*environment variable*``` can be checked in any container with below command:
+
+```Docker-compose exec <container_name>```
+
+*My case*:
+
+```ini
+dc-ops@docker:~/DevOps_Master_Docker/10.Docker-Compose/06.Env-Variable$ docker-compose exec web env
+PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=bcc79b801097
+TERM=xterm
+LANG=C.UTF-8
+GPG_KEY=97FC712E4C024BBEA48A61ED3A5CA953F73C700D
+PYTHON_VERSION=3.4.10    # ENV Variable value
+PYTHON_PIP_VERSION=19.0.3 # ENV Variable value
+HOME=/root
+```
 
 ## Now, we will try to deploy it with docker compose
-
 ```bash
 docker compose up -d
 ```                                                                                
-### outcomes:
-![alt text](image-1.png)
+### Outcomes:
+![alt text](image.png)
 
 ### Delete the project
 ```bash
