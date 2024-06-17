@@ -14,6 +14,9 @@ In this command:
 ' IMAGE is the name of the Docker image you want to use.
 ' [COMMAND] [ARG...] allows you to specify a command and its arguments to run inside the container.
 ```
+```bash
+docker service create -d --replicas 8 alpine ping 192.168.1.221
+```
 
 > To check all the containers replicas deployed by the service using the below command
 ```css
