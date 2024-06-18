@@ -12,7 +12,7 @@
 
 Docker Swarm Visualizer
 
-!{Swarm mode overview} https://docs.docker.com/engine/swarm/
+[Swarm mode overview](https://docs.docker.com/engine/swarm/) 
 
 To run in a docker swarm:
 ```bash
