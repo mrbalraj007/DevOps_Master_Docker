@@ -187,7 +187,7 @@ Here is ```two``` ways:
 - 02. We can assign the label at engine level, if we run the command to inspect to worker02 then we will see the below info.
 ![alt text](image-7.png)
 
-> first we will go to node ```worker02``` then go to path ```/etc/docker``` and will create a file called ```daemon.json`` and content would below and restart the ```docker service```
+> first we will go to node ```worker02``` then go to path ```/etc/docker``` and will create a file called ```daemon.json``` and content would below and restart ```docker service```
 ```yml
 {
         "labels" : ["name=authorised_Node"]  # You can give anyName
