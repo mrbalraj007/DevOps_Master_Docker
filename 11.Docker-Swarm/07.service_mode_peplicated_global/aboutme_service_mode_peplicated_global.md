@@ -10,9 +10,11 @@
 - Docker Swarm Visualizer: A tool that provides a real-time visual representation of the architecture of a Docker Swarm cluster, making it easy to understand services and nodes.
 - Docker Daemon: The Docker daemon is a background process that manages the building, running, and distribution of Docker containers.
 
-Docker Swarm Visualizer
-
 [Swarm mode overview](https://docs.docker.com/engine/swarm/) 
+
+### Docker Swarm Visualizer
+
+> How to install Visualizer in Docker Swarm:
 
 To run in a docker swarm:
 ```bash
@@ -32,7 +34,7 @@ ID             NAME      MODE         REPLICAS   IMAGE                          
 zqgocy2o1w2w   viz       replicated   1/1        dockersamples/visualizer:latest   *:8080->8080/tcp
 ```
 
-My lab docker host IP is 
+Docker host IP address in my lab:
 ```css
 ens32: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
         inet 192.168.1.221  netmask 255.255.255.0  broadcast 192.168.1.255
