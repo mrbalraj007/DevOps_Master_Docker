@@ -235,3 +235,40 @@ gty2jh9n94oa   frosty_ellis.6   alpine:latest   worker02   Running         Runni
 In visualizer, how it looks like:
 
 ![alt text](image-12.png)
+
+********************************************************
+```css
+$ docker service ls
+ID             NAME               MODE         REPLICAS   IMAGE                             PORTS
+yd79h72plzu9   distracted_benz    replicated   0/6        alpine:latest
+6il0kfq4hxu4   flamboyant_gould   replicated   10/10      alpine:latest
+sdtcbv37rhyc   frosty_ellis       replicated   6/6        alpine:latest
+hs5l9qwtqrym   inspiring_keller   replicated   3/3        alpine:latest
+yhyzujhxb22f   trusting_ganguly   global       3/3        alpine:latest
+zqgocy2o1w2w   viz                replicated   1/1        dockersamples/visualizer:latest   *:8080->8080/tcp
+
+```
+
+### Addtional Command
+
+
+> To remove all Docker services at once, you can use the following command, which stops and removes all services listed by ```docker service ls```:
+```bash
+docker service rm $(docker service ls -q)
+```
+Here is the command breakdown:
+
+- docker service ls -q: Lists only the IDs of the services.
+- docker service rm $(docker service ls -q): Removes all services using their IDs.
+
+>> To remove all Docker services except one, you can use a combination of docker service ls and grep to filter out the service you want to keep, and then use xargs to remove the rest. Let's say you want to exclude the service with the NAME ```viz```.
+```bash
+docker service ls -q | grep -v $(docker service ls -q -f name=viz) | xargs docker service rm
+```
+
+Explanation:
+
+- docker service ls -q: Lists all service IDs.
+- grep -v $(docker service ls -q -f name=viz): Excludes the service ID of viz.
+- xargs docker service rm: Removes all services listed (except viz).
+
