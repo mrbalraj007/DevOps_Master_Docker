@@ -81,6 +81,49 @@ ukgqq3z1kz158b3dfdfzg5hck     worker01   Ready     Active                       
 dc-ops@docker:~$
 ```
 
+#### Inspect an individual node
+You can run docker node inspect <NODE-ID> on a manager node to view the details for an individual node. The output defaults to JSON format, but you can pass the ```--pretty``` flag to print the results in human-readable format. 
+
+For example:
+```css
+$ docker node inspect worker02 --pretty
+ID:                     5dsjfyq5c6o5qwr0s68rlqxu3
+Labels:
+ - ssd=true
+Hostname:               worker02
+Joined at:              2024-06-17 02:46:32.57797288 +0000 utc
+Status:
+ State:                 Ready
+ Availability:          Drain
+ Address:               192.168.1.223
+Platform:
+ Operating System:      linux
+ Architecture:          x86_64
+Resources:
+ CPUs:                  2
+ Memory:                889.5MiB
+Plugins:
+ Log:           awslogs, fluentd, gcplogs, gelf, journald, json-file, local, splunk, syslog
+ Network:               bridge, host, ipvlan, macvlan, null, overlay
+ Volume:                local
+Engine Version:         26.1.4
+TLS Info:
+ TrustRoot:
+-----BEGIN CERTIFICATE-----
+MIIBaTCCARCgAwIBAgIUDE1AYTMN7KfrVmbuFTIa0iw8YRgwCgYIKoZIzj0EAwIw
+EzERMA8GA1UEAxMIc3dhcm0tY2EwHhcNMjQwNjE2MDc1MjAwWhcNNDQwNjExMDc1
+MjAwWjATMREwDwYDVQQDEwhzd2FybS1jYTBZMBMGByqGSM49AgEGCCqGSM49AwEH
+A0IABDMwlN5I0F5EBT7V/ROhJJzEWNR1TP9ujarrxEN8fS/eCRPYCOkUoTR3A3ek
+JNDwixSHs7e5qlPnFKwIty8vgMajQjBAMA4GA1UdDwEB/wQEAwIBBjAPBgNVHRMB
+Af8EBTADAQH/MB0GA1UdDgQWBBQhQsdP+LnyrIT8cm3rnyb2cjBRKTAKBggqhkjO
+PQQDAgNHADBEAiAe5HeXvMe946ghyXoDLcigI46EE4ZlLPTkOXwc7s4zrQIgGKj1
+Jn0mvArNqf5JjvrzhoRZLWPjeDwOOODGmZ4SWOc=
+-----END CERTIFICATE-----
+
+ Issuer Subject:        MBMxETAPBgNVBAMTCHN3YXJtLWNh
+ Issuer Public Key:     MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEMzCU3kjQXkQFPtX9E6EknMRY1HVM/26NquvEQ3x9L94JE9gI6RShNHcDd6Qk0PCLFIezt7mqU+cUrAi3Ly+Axg==
+```
+
 > We will create a new service to check whether we are getting new loads on worker 02 or not.
 
 ```bash
