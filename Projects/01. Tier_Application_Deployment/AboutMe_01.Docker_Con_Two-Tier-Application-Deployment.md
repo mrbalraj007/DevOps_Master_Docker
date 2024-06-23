@@ -218,4 +218,63 @@ $ docker-compose up -d
  ```
  ![alt text](image-4.png)
 
- 
+
+Now, we will try to access the Flask app in web browser:
+
+- Frontend: http://18.208.178.223
+- Backend: http://18.208.178.223:5000
+
+![alt text](image.png)
+
+ Now, we will make an entry in the app and see if the same entry exists in the database or not.
+
+![alt text](image-7.png)
+
+Now, we will validate the same entry in db server.
+
+```bash
+$ docker exec -it 60d58032e7d2 bash
+```
+
+```bash
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| myDb               |
++--------------------+
+2 rows in set (0.00 sec)
+
+mysql>
+```
+```css
+"USE <database_name>; SHOW TABLES;"
+```
+```bash
+mysql> USE myDb; SHOW TABLES;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
++----------------+
+| Tables_in_myDb |
++----------------+
+| messages       |
++----------------+
+1 row in set (0.01 sec)
+
+mysql>
+```
+
+```bash
+mysql> select * from messages;
++----+-------------------------------------+
+| id | message                             |
++----+-------------------------------------+
+|  1 | This is my first entry in database. |
++----+-------------------------------------+
+1 row in set (0.01 sec)
+
+mysql>
+```
