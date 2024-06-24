@@ -1,9 +1,35 @@
 # [Kubeadm Installation Guide for 2 tier application](https://github.com/LondheShubham153/kubestarter/blob/main/kubeadm_installation.md)
 
+https://www.linkedin.com/pulse/install-kubernetes-cluster-ubuntu-kubeadm-abhishek-rana/
+
 ---
 
 Execute on Both "Master" & "Worker Node"
 ---
+
+```yml
+sudo apt-get update -y
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install docker.io -y
+
+sudo systemctl enable --now docker # enable and start in single command
+
+# Add Kubernetes APT repository and install required packages
+
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+# This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-get update -y
+
+sudo systemctl enable --now kubelet
+sudo systemctl start kubelet
+```
+<!-- <---------------------------------------------->
 
 ```bash
 # disable swap
@@ -60,8 +86,9 @@ sudo systemctl start kubelet
 # sudo apt-get install -y apt-transport-https ca-certificates curl
 # sudo apt install docker.io -y
 # sudo systemctl enable --now docker # enable and start in single command
-
 ```
+<-------------------------------------------- --> -->
+
 
 ---
 # On "Master Node"
@@ -102,28 +129,7 @@ https://github.com/LondheShubham153/two-tier-flask-app/tree/master/k8s
 clone this repo: https://github.com/LondheShubham153/two-tier-flask-app.git
 
 
-```yml
-sudo apt-get update -y
-sudo apt-get install -y apt-transport-https ca-certificates curl
-sudo apt install docker.io -y
 
-sudo systemctl enable --now docker # enable and start in single command
-
-# Add Kubernetes APT repository and install required packages
-
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl gpg
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-# This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubectl
-sudo apt-get update -y
-
-sudo systemctl enable --now kubelet
-sudo systemctl start kubelet
-```
 
 ```bash
 $ sudo kubeadm config images pull
