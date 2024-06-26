@@ -101,8 +101,15 @@ Troubleshooting Tips : Ensure both servers can communicate over the necessary po
 10251 (kube-scheduler)
 10252 (kube-controller-manager)
 ```
+Current Cluster status:
+
+![alt text](image.png)
 ----------------------------------------
 [Source Code:](https://github.com/mrbalraj007/two-tier-flask-app)
+
+Will clone from this repo: https://github.com/mrbalraj007/two-tier-flask-app.git
+
+![alt text](image.png)
 
 Now, we will deploy the pod and playaround:
 
@@ -110,5 +117,5 @@ Now, we will deploy the pod and playaround:
 
 
 https://github.com/LondheShubham153/two-tier-flask-app/tree/master/k8s
-clone this repo: https://github.com/LondheShubham153/two-tier-flask-app.git
+
 
