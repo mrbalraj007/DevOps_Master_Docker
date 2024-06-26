@@ -15,6 +15,8 @@ OS Details: Ubuntu 24.04 LTS
 ### Will run the following code on "Master" & "Worker" Node
 
 ```yaml
+# disable swap
+sudo swapoff -a
 
 # Update the package first
 sudo apt-get update -y
@@ -39,8 +41,7 @@ sudo apt-get update -y
 sudo apt-get install kubeadm kubelet kubectl -y
 sudo apt-mark hold kubeadm kubelet kubectl
 
-# disable swap
-sudo swapoff -a
+
 ```
 - Will validate the vesion
 ```bash
