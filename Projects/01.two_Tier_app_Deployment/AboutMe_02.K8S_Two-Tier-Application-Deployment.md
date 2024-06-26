@@ -11,6 +11,7 @@ OS Details: Ubuntu 24.04 LTS
 ```
 --------
 
+
 ### Will run the following code on "Master" & "Worker" Node
 
 ```yaml
@@ -18,6 +19,8 @@ OS Details: Ubuntu 24.04 LTS
 # Update the package first
 sudo apt-get update -y
 
+# To install Java
+sudo apt install openjdk-17-jre-headless -y
 # Install docker
 sudo apt-get install docker.io -y
 sudo usermod -aG docker $USER
@@ -46,6 +49,10 @@ kubeadm version
 -----
 #### Following code should be run only on "```Master Node```"
 
+```sh
+systemctl status kubelet
+sudo systemctl restart kubelet
+```
 
 ```bash
 sudo kubeadm config images pull
