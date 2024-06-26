@@ -81,6 +81,30 @@ sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-has
 $ sudo kubeadm join 172.31.49.46:6443 --token gxd09z.wg682jdial5h57lr --discovery-token-ca-cert-hash sha256:a831854669c32ec8cdd4d4146a8922c602bb2753f52acd3072a453def1f081c2 --v=5
 ```
 
+- Add the User to the Docker Group:
+This is the most common solution. Adding your user to the docker group will allow you to run Docker commands without needing root privileges.
+
+```sh
+sudo usermod -aG docker dc-ops
+```
+
+- Verify Docker Group Membership:
+Check if the docker group exists and if the user is part of it.
+```sh
+getent group docker
+```
+- Restart Docker Service:
+If Docker was recently installed or there are issues with the service, you might need to restart it.
+```sh
+sudo systemctl restart docker
+```
+
+- Check Docker Service Status:
+Ensure that the Docker service is running correctly.
+```sh
+sudo systemctl status docker
+```
+
 #### Verify the Cluster
 On the master node, verify that the worker node has joined the cluster:
 ```sh
@@ -103,19 +127,28 @@ Troubleshooting Tips : Ensure both servers can communicate over the necessary po
 ```
 Current Cluster status:
 
-![alt text](image.png)
+![alt text](Images\image9.png)
 ----------------------------------------
 [Source Code:](https://github.com/mrbalraj007/two-tier-flask-app)
 
 Will clone from this repo: https://github.com/mrbalraj007/two-tier-flask-app.git
 
-![alt text](image.png)
+![alt text](Images\image8.png)
+ 
+will go to the direcotry ```two-tier-flask-ap``` and go to ```k8s```
 
-Now, we will deploy the pod and playaround:
+![alt text](Images\image10.png)
 
+Now, we will deploy the pod:
+```sh
+$ kubectl apply -f two-tier-app-pod.yml
+```
+![alt text](Images\image11.png)
 
-
-
-https://github.com/LondheShubham153/two-tier-flask-app/tree/master/k8s
+__To scale the pod:__ I have used ```10``` in my deployment file.
+```sh
+$ kubectl apply -f two-tier-app-deployment.yml
+```
+![alt text](Images\image12.png)
 
 
