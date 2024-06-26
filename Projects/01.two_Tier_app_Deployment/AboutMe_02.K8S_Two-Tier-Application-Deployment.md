@@ -15,9 +15,6 @@ OS Details: Ubuntu 24.04 LTS
 ### Will run the following code on "Master" & "Worker" Node
 
 ```yaml
-# disable swap
-sudo swapoff -a
-
 # Update the package first
 sudo apt-get update -y
 
@@ -29,8 +26,7 @@ sudo usermod -aG docker $USER
 sudo systemctl enable docker  # enable and start in single command
 
 # Add Kubernetes APT repository and install required packages
-
-sudo apt-get update -y
+sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 # This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
@@ -41,6 +37,8 @@ sudo apt-get update -y
 sudo apt-get install kubeadm kubelet kubectl -y
 sudo apt-mark hold kubeadm kubelet kubectl
 
+# disable swap
+sudo swapoff -a
 
 ```
 - Will validate the vesion
