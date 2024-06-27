@@ -9,30 +9,23 @@ master : 192.168.1.101
 worker : 192.168.1.102
 OS Details: Ubuntu 24.04 LTS
 ```
-
-cat >>/etc/hosts<<EOF
-192.168.1.101   k8s-master     master 
-192.168.1.102   k8s-worker1    worker1 
-EOF
 --------
-
 
 ### Will run the following code on "Master" & "Worker" Node
 
 ```yaml
+
 # Update the package first
 sudo apt-get update -y
 
-# To install Java
- sudo apt install openjdk-17-jre-headless -y
-# sudo apt install openjdk-22-jre-headless -y
 # Install docker
 sudo apt-get install docker.io -y
 sudo usermod -aG docker $USER
 sudo systemctl enable docker  # enable and start in single command
 
 # Add Kubernetes APT repository and install required packages
-sudo apt-get update
+
+sudo apt-get update -y
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 # This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
@@ -45,7 +38,6 @@ sudo apt-mark hold kubeadm kubelet kubectl
 
 # disable swap
 sudo swapoff -a
-
 ```
 - Will validate the vesion
 ```bash
@@ -54,10 +46,6 @@ kubeadm version
 -----
 #### Following code should be run only on "```Master Node```"
 
-```sh
-systemctl status kubelet
-sudo systemctl restart kubelet
-```
 
 ```bash
 sudo kubeadm config images pull
@@ -93,30 +81,6 @@ sudo kubeadm join <master-ip>:6443 --token <token> --discovery-token-ca-cert-has
 $ sudo kubeadm join 172.31.49.46:6443 --token gxd09z.wg682jdial5h57lr --discovery-token-ca-cert-hash sha256:a831854669c32ec8cdd4d4146a8922c602bb2753f52acd3072a453def1f081c2 --v=5
 ```
 
-- Add the User to the Docker Group:
-This is the most common solution. Adding your user to the docker group will allow you to run Docker commands without needing root privileges.
-
-```sh
-sudo usermod -aG docker dc-ops
-```
-
-- Verify Docker Group Membership:
-Check if the docker group exists and if the user is part of it.
-```sh
-getent group docker
-```
-- Restart Docker Service:
-If Docker was recently installed or there are issues with the service, you might need to restart it.
-```sh
-sudo systemctl restart docker
-```
-
-- Check Docker Service Status:
-Ensure that the Docker service is running correctly.
-```sh
-sudo systemctl status docker
-```
-
 #### Verify the Cluster
 On the master node, verify that the worker node has joined the cluster:
 ```sh
@@ -139,55 +103,16 @@ Troubleshooting Tips : Ensure both servers can communicate over the necessary po
 ```
 Current Cluster status:
 
-![alt text](Images\image9.png)
+![alt text](image.png)
 ----------------------------------------
 [Source Code:](https://github.com/mrbalraj007/two-tier-flask-app)
 
 Will clone from this repo: https://github.com/mrbalraj007/two-tier-flask-app.git
-```sh
-git clone https://github.com/mrbalraj007/two-tier-flask-app.git
-```
-![alt text](Images\image8.png)
- 
-will go to the direcotry ```two-tier-flask-ap``` and go to ```k8s```
 
-![alt text](Images\image10.png)
+![alt text](image.png)
 
-Now, we will deploy the pod:
-```sh
-$ kubectl apply -f two-tier-app-pod.yml
-```
-![alt text](Images\image11.png)
+Now, we will deploy the pod and playaround:
 
-__To scale the pod:__ I have used ```10``` in my deployment file.
-```sh
-$ kubectl apply -f two-tier-app-deployment.yml
-```
-![alt text](Images\image12.png)
-
-If you are getting this error message then need to follow as below:
-```sh
-$ docker container ls
-permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/json": dial unix /var/run/docker.sock: connect: permission denied
-```
-
-Add your user to the docker group:
-```sh
-sudo usermod -aG docker $USER
-```
-Restart the Docker service:
-```sh
-sudo systemctl restart docker
-```
-Log out and log back in for the changes to take effect, or you can use the following command to apply the group change without logging out:
-```sh
-newgrp docker
-```
-```sh
-kubectl describe node worker
-```
-
-
-
-kubectl scale deployment two-tier-app --replicas=2
+- change the directory to ``` cd two-tier-flask-app/``` and go to "```k8s```"
+![alt text](image.png)
 
