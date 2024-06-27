@@ -21,19 +21,20 @@ sudo su -
 ```
 
 ```sh
-# stop and Disable firewall
+# stop and Disable firewall (ufw disable: This command disables the Uncomplicated Firewall (UFW) on the machine, stopping all firewall rules managed by UFW.)
 ufw disable
 
-# Enable and Load Kernel modules on both Machine
+# Ensures that these kernel modules are loaded on boot.
 cat >>/etc/modules-load.d/containerd.conf<<EOF
 overlay
 br_netfilter
 EOF
-modprobe overlay
-modprobe br_netfilter
+modprobe overlay    # Loads the overlay kernel module.
+modprobe br_netfilter # Loads the br_netfilter kernel module.
 
-# Disable and turn off SWAP on both Machine
-sed -i '/swap/d' /etc/fstab ; swapoff -a
+
+# Disable and turn off SWAP on both Machine (sed -i '/swap/d' /etc/fstab: This command edits the /etc/fstab file to remove any lines containing "swap". This prevents swap from being enabled on boot.swapoff -a: Disables all swap space immediately.)
+sed -i '/swap/d' /etc/fstab ; swapoff -a  
 
 # Update sysctl settings for Kubernetes networking
 cat >>/etc/sysctl.d/kubernetes.conf<<EOF
@@ -41,29 +42,42 @@ net.bridge.bridge-nf-call-ip6tables = 1
 net.bridge.bridge-nf-call-iptables  = 1
 net.ipv4.ip_forward                 = 1
 EOF
-sysctl --system
+sysctl --system  #Reloads all sysctl configurations to apply the new settings.
 
 # Install containerd runtime
 apt update
-apt install -qq -y ca-certificates curl gnupg lsb-release
+apt install -qq -y ca-certificates curl gnupg lsb-release  #Installs necessary packages for managing certificates, making HTTP requests, handling GPG keys, and checking the distribution release.
+
+# mkdir -p /etc/apt/keyrings: Creates the directory /etc/apt/keyrings if it doesn't already exist. curl -fsSL ... | gpg --dearmor -o /etc/apt/keyrings/docker.gpg: Downloads the Docker GPG key and converts it to a format that can be used by APT, saving it to /etc/apt/keyrings/docker.gpg.
 
 mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+# echo ... | tee /etc/apt/sources.list.d/docker.list: Adds the Docker APT repository to the list of sources from which packages can be downloaded.
 echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \ $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list
+
 apt update -y
 apt install -qq -y containerd.io
 
+# mkdir -p /etc/apt/keyrings: Creates the directory /etc/apt/keyrings if it doesn't already exist. curl -fsSL ... | gpg --dearmor -o /etc/apt/keyrings/docker.gpg: Downloads the Docker GPG key and converts it to a format that can be used by APT, saving it to /etc/apt/keyrings/docker.gpg.
+
 containerd config default > /etc/containerd/config.toml
+
+#sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml: Modifies the containerd configuration to use systemd for managing cgroups. systemctl restart containerd: Restarts the containerd service to apply the new configuration.systemctl enable containerd >/dev/null: Enables the containerd service to start on boot, suppressing the output.
+
 sed -i 's/SystemdCgroup \= false/SystemdCgroup \= true/g' /etc/containerd/config.toml
 systemctl restart containerd
-systemctl enable containerd >/dev/null
+systemctl enable containerd >/dev/null  
 
 # Add the repo for Kubernetes and will install Kubernetes components (kubeadm, kubelet and kubectl)
 
 apt-get update -y
-apt-get install -y apt-transport-https ca-certificates curl gpg
+apt-get install -y apt-transport-https ca-certificates curl gpg # Installs necessary packages for secure package management and HTTP transport.
+
+
+
+#mkdir -p -m 755 /etc/apt/keyrings: Creates the directory /etc/apt/keyrings with the permissions set to 755 if it doesn't already exist. curl -fsSL ... | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg: Downloads the Kubernetes GPG key and converts it to a format that can be used by APT, saving it to /etc/apt/keyrings/kubernetes-apt-keyring.gpg. echo ... | sudo tee /etc/apt/sources.list.d/kubernetes.list: Adds the Kubernetes APT repository to the list of sources from which packages can be downloaded.
 
 mkdir -p -m 755 /etc/apt/keyrings
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.29/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
@@ -71,6 +85,8 @@ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.
 
 apt-get update
 apt-get install -y kubelet=1.29.* kubeadm=1.29.* kubectl=1.29.*
+
+# apt-mark hold kubelet kubeadm kubectl: Prevents these packages from being automatically updated.
 apt-mark hold kubelet kubeadm kubectl
 ```
 * Above command will be applied on both nodes.
