@@ -342,9 +342,71 @@ we can see the all entries which we have made in application.
 final outcomes:
 ![alt text](image-16.png)
 ![alt text](image-17.png)
+-----------------------------------------------------------
+#### Deleting Services
 
+- To delete a specific service:
+```sh
+kubectl delete service <service-name>
+```
 
-***********************************
+- To delete all services in a namespace:
+```sh
+kubectl delete services --all
+```
+- Deleting Volumes
+  + To delete a PersistentVolumeClaim (PVC):
+  ```sh
+  kubectl delete pvc <pvc-name>
+  ```
+ + To delete all PersistentVolumeClaims in a namespace:
+ ```sh
+ kubectl delete pvc --all
+ ```
+- To delete a PersistentVolume (PV):
+```sh
+kubectl delete pv <pv-name>
+```
+- Deleting Pods:
+
+    + To delete a specific pod:
+      ```bash
+      kubectl delete pod <pod-name>
+      ```
+
+    + To delete all pods in a namespace:
+      ```bash
+      kubectl delete pods --all
+      ```
+- Deleting Deployments:
+
+    + To delete a specific deployment:
+      ```bash
+      kubectl delete deployment <deployment-name>
+      ```
+    + To delete all deployments in a namespace:
+      ```bash
+      kubectl delete deployments --all
+      ```
+- Deleting All Resources in a Namespace:
+   * If you want to delete all resources (services, volumes, pods, deployments, etc.) in a namespace, you can use:
+      ```bash
+      kubectl delete all --all
+      ```
+      *This will delete all resources of all types in the current namespace. If you want to specify a particular namespace, you can add the -n flag:*
+
+      ```bash
+      kubectl delete all --all -n <namespace>
+      ```
+- Deleting a Namespace
+     *If you want to delete an entire namespace along with all the resources within it:*
+
+     ```bash
+      kubectl delete namespace <namespace-name>     
+------------------------------------------------------------
+
+### Others:
+
 If you are getting this error message then need to follow as below:
 ```sh
 $ docker container ls
