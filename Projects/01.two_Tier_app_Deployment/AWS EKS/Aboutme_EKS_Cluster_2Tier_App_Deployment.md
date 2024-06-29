@@ -189,3 +189,11 @@ Will try to access site in browser, and will take the IP address/ name from ```k
 and Site is accecssilbe :-)
 ![alt text](image-12.png)
 
+### To Delete the cluster
+```sh
+eksctl delete cluster --name demo-singh-eks --region us-east-1
+```
+![alt text](image-14.png)
+
+![alt text](image-15.png)
+
