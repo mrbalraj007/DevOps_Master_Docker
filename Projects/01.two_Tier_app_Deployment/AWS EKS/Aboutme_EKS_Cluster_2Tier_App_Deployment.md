@@ -193,7 +193,7 @@ and Site is accecssilbe :-)
 ```sh
 eksctl delete cluster --name demo-singh-eks --region us-east-1
 ```
-![alt text](image-14.png)
+![alt text](image-16.png)
 
 ![alt text](image-15.png)
 
