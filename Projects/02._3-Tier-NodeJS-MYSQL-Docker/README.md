@@ -38,6 +38,7 @@ Before setting up this project, ensure you have the following installed on your 
 
 ### 1. Setting Up MySQL Server
 
+
 First, you need to set up a MySQL server on your local machine.
 
 1. **Update the package index:**
