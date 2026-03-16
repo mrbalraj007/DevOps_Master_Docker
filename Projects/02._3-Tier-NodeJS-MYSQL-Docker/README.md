@@ -33,8 +33,30 @@ Before setting up this project, ensure you have the following installed on your 
 
 - [Node.js](https://nodejs.org/) (version 12.x or higher)
 - [MySQL](https://www.mysql.com/) (version 5.7 or higher)
+- install ```docker-compose```
+```bash
+# 1. Download the latest version (check the releases page for the most current version number)
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+# 2. Apply executable permissions to the binary
+sudo chmod +x /usr/local/bin/docker-compose
+
+# 3. Verify the installation (uses a hyphenated command)
+docker-compose --version
+
+```
 
 ## Setup Instructions
+
+- Clone the repo first [https://github.com/mrbalraj007/DevOps_Master_Docker.git]
+
+- go to Project "Projects/02._3-Tier-NodeJS-MYSQL-Docker"
+- review the ```Dockerfile```
+- run the following command
+```bash
+docker-compose up --build
+```
+
 
 ### 1. Setting Up MySQL Server
 
