@@ -1,0 +1,44 @@
+# Use Node.js base image (non-alpine for better compatibility with older webpack projects)
+FROM node:14
+
+# -----------------------------
+# Build the Client Application
+# -----------------------------
+WORKDIR /usr/src/app/client
+
+# Copy package files first (better Docker caching)
+COPY client/package*.json ./
+
+# Install dependencies with legacy peer deps to avoid webpack/ajv conflict
+RUN npm install --legacy-peer-deps
+
+# Copy the client source
+COPY client/ ./
+
+# Build the client
+RUN npm run build
+
+
+# -----------------------------
+# Setup the Server Application
+# -----------------------------
+WORKDIR /usr/src/app/server
+
+# Copy server package files
+COPY server/package*.json ./
+
+# Install server dependencies
+RUN npm install --legacy-peer-deps
+
+# Copy server source code
+COPY server/ ./
+
+# Create public folder and copy built client files
+RUN mkdir -p ./public
+RUN cp -r /usr/src/app/client/dist/* ./public/
+
+# Expose application port
+EXPOSE 5000
+
+# Start the Node server
+CMD ["npm", "start"]
